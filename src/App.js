@@ -1,43 +1,81 @@
 import React, { useCallback } from 'react';
 import ReactFlow, {
+  addEdge,
+  applyNodeChanges,
   MiniMap,
   Controls,
   Background,
   useNodesState,
   useEdgesState,
-  addEdge,
+  ReactFlowProvider,
 } from 'reactflow';
- 
+
+import { nodes as initialNodes, edges as initialEdges } from './components/initial-elements';
+import CustomNode from './components/CustomNode';
+import Sidebar from './components/Sidebar.js';
+
 import 'reactflow/dist/style.css';
- 
-const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
- 
-export default function App() {
+import './styles/overview.css';
+import './styles/index.css';
+
+const nodeTypes = {
+  custom: CustomNode,
+};
+
+const minimapStyle = {
+  height: 120,
+};
+
+const onInit = (reactFlowInstance) => {
+  reactFlowInstance.fitView();
+};
+
+const OverviewFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
- 
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges],
-  );
- 
+
+  const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
+
+  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+
+  // we are using a bit of a shortcut here to adjust the edge type
+  // this could also be done with a custom edge for example
+  const edgesWithUpdatedTypes = edges.map((edge) => {
+    if (edge.sourceHandle) {
+      const edgeType = nodes.find((node) => node.type === 'custom').data.selects[edge.sourceHandle];
+      edge.type = edgeType;
+    }
+
+    return edge;
+  });
+
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-      >
-        <Controls />
-        <MiniMap />
-        <Background variant="dots" gap={12} size={1} />
-      </ReactFlow>
-    </div>
+    <>
+      <div style={{ width: '100vw', height: '100vh' }} className="providerflow">
+        <ReactFlowProvider>
+          <div className="reactflow-wrapper">
+            <ReactFlow
+              nodes={nodes}
+              edges={edgesWithUpdatedTypes}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              onChange={onChange}
+              onInit={onInit}
+              fitView
+              attributionPosition="top-right"
+              nodeTypes={nodeTypes}
+            >
+              <MiniMap style={minimapStyle} zoomable pannable />
+              <Controls />
+              <Background color="#aaa" gap={16} />
+            </ReactFlow>
+          </div>
+          <Sidebar nodes={nodes} setNodes={setNodes} />
+        </ReactFlowProvider>
+      </div>
+    </>
   );
-}
+};
+
+export default OverviewFlow;
