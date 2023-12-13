@@ -1,81 +1,118 @@
-import React, { useCallback } from 'react';
+
+// Default Components
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import ReactFlow, {
+  ReactFlowProvider,
   addEdge,
-  applyNodeChanges,
-  MiniMap,
-  Controls,
-  Background,
+  useNodes,
+  useEdges,
   useNodesState,
   useEdgesState,
-  ReactFlowProvider,
+  Controls,
+  applyNodeChanges,
+  MiniMap,
+  Background,
 } from 'reactflow';
 
+// Custom Components
 import { nodes as initialNodes, edges as initialEdges } from './components/initial-elements';
-import CustomNode from './components/CustomNode';
+import Nodebar from './components/Nodebar.js';
 import Sidebar from './components/Sidebar.js';
 
+// Default Styles
 import 'reactflow/dist/style.css';
+import 'reactflow/dist/style.css';
+
+// Custom Styles
 import './styles/overview.css';
 import './styles/index.css';
 
-const nodeTypes = {
-  custom: CustomNode,
-};
+// Lcal Variable
+let id = 0;
+const getId = () => `dndnode_${id++}`;
+let nodeJson = {};
+// export default app
+export default () => {
 
-const minimapStyle = {
-  height: 120,
-};
-
-const onInit = (reactFlowInstance) => {
-  reactFlowInstance.fitView();
-};
-
-const OverviewFlow = () => {
+  // react component definitions
+  const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
+  // Events Definitions
   const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
-
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+  const onDragOver = useCallback((event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }, []);
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      const type = event.dataTransfer.getData('application/reactflow');
+      if (typeof type === 'undefined' || !type) {
+        return;
+      }
+      const position = reactFlowInstance.screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+      const newNode = {
+        id: getId(),
+        type,
+        position,
+        data: { label: `${type} node` },
+      };
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [reactFlowInstance],
+  );
 
-  // we are using a bit of a shortcut here to adjust the edge type
-  // this could also be done with a custom edge for example
-  const edgesWithUpdatedTypes = edges.map((edge) => {
-    if (edge.sourceHandle) {
-      const edgeType = nodes.find((node) => node.type === 'custom').data.selects[edge.sourceHandle];
-      edge.type = edgeType;
+  const onSave = () => {
+    if(reactFlowInstance){
+      nodeJson = JSON.stringify(reactFlowInstance.toObject());
+      alert(nodeJson);
     }
+  };
 
-    return edge;
-  });
+  const onRestore = () => {
+    const flow = JSON.parse(nodeJson);
+    if (flow) {
+      setNodes(flow.nodes || []);
+      setEdges(flow.edges || []);
+    }
+  };
+
+  useEffect(() => {
+    if(reactFlowInstance){
+      nodeJson = JSON.stringify(reactFlowInstance.toObject());
+      console.log(nodeJson);
+    }
+  }, [nodes, edges]);
+
 
   return (
-    <>
-      <div style={{ width: '100vw', height: '100vh' }} className="providerflow">
-        <ReactFlowProvider>
-          <div className="reactflow-wrapper">
-            <ReactFlow
-              nodes={nodes}
-              edges={edgesWithUpdatedTypes}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              onChange={onChange}
-              onInit={onInit}
-              fitView
-              attributionPosition="top-right"
-              nodeTypes={nodeTypes}
-            >
-              <MiniMap style={minimapStyle} zoomable pannable />
-              <Controls />
-              <Background color="#aaa" gap={16} />
-            </ReactFlow>
-          </div>
-          <Sidebar nodes={nodes} setNodes={setNodes} />
-        </ReactFlowProvider>
-      </div>
-    </>
+    <div className="dndflow" style={{ width: '98vw', height: '98vh' }} >
+      <ReactFlowProvider>
+        <Nodebar onSave={onSave} onRestore={onRestore} nodeJson={nodeJson} />
+        <div className="reactflow-wrapper" ref={reactFlowWrapper}>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onChange={onChange}
+            onInit={setReactFlowInstance}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            attributionPosition="top-right"
+          >
+            <MiniMap style={{ height: 120 }} zoomable pannable />
+            <Background color="#aaa" gap={16} />
+            <Controls />
+          </ReactFlow>
+        </div>
+        <Sidebar nodes={nodes} setNodes={setNodes} />
+      </ReactFlowProvider>
+    </div>
   );
 };
-
-export default OverviewFlow;
