@@ -1,10 +1,18 @@
-import React, { useCallback } from 'react';
-import { useStore } from 'reactflow';
-
+import React, { useCallback, useState, useEffect } from 'react';
+import { useStore, useOnSelectionChange } from 'reactflow';
 const transformSelector = (state) => state.transform;
 
-export default ({ nodes, setNodes }) => {
+export default ({ nodes, setNodes, nodeJson }) => {
+    const [nodeName, setNodeName] = useState();
+    const [selectedNodes, setSelectedNodes] = useState([]);
+    const [selectedEdges, setSelectedEdges] = useState([]);
     const transform = useStore(transformSelector);
+    useOnSelectionChange({
+        onChange: ({ nodes, edges }) => {
+            setSelectedNodes(nodes.map((node) => JSON.stringify(node)));
+            setSelectedEdges(edges.map((edge) => JSON.stringify(edge)));
+        },
+    });
 
     const selectAll = useCallback(() => {
         setNodes((nds) =>
@@ -15,25 +23,51 @@ export default ({ nodes, setNodes }) => {
         );
     }, [setNodes]);
 
+    useEffect(() => {
+        setNodes((nds) =>
+            nds.map((node) => {
+                if (node.selected) {
+                    node.data = {
+                        ...node.data,
+                        label: nodeName,
+                    };
+                }
+                return node;
+            })
+        );
+    }, [nodeName, setNodes]);
     return (
         <aside>
             <div className="description">
-                This is an example of how you can access the internal state outside of the ReactFlow
-                component.
+                현재 선택 노드 정보 :
+                <p style={{ width: '13vw', height: '10vh', wordWrap: 'break-word', overflow: 'scroll' }}>Selected nodes: {selectedNodes.join(', ')}</p>
+                <p style={{ width: '13vw', height: '10vh', wordWrap: 'break-word', overflow: 'scroll' }}>Selected edges: {selectedEdges.join(', ')}</p>
             </div>
-            <div className="title">Zoom & pan transform</div>
+            <label>노드 내용 :</label>
+            <input defaultValue={nodeName} onChange={(evt) => setNodeName(evt.target.value)} />
+
+            <div className="description">
+                노드 상세 정보 창
+            </div>
+            <div className="title">확대 정보</div>
             <div className="transform">
                 [{transform[0].toFixed(2)}, {transform[1].toFixed(2)}, {transform[2].toFixed(2)}]
             </div>
-            <div className="title">Nodes</div>
-            {nodes.map((node) => (
-                <div key={node.id}>
-                    Node {node.id} - x: {node.position.x.toFixed(2)}, y: {node.position.y.toFixed(2)}
-                </div>
-            ))}
-
+            <div className="title">노드 정보</div>
+            <div style={{ width: '13vw', height: '10vh', wordWrap: 'break-word', overflow: 'scroll' }}>
+                {nodes.map((node) => (
+                    <div key={node.id}>
+                        Node {node.id} - x: {node.position.x.toFixed(2)}, y: {node.position.y.toFixed(2)}
+                    </div>
+                ))}
+            </div>
             <div className="selectall">
-                <button onClick={selectAll}>select all nodes</button>
+                <button onClick={selectAll}>전체 노드 선택</button>
+            </div>
+
+            <div className="title">노드 JSON 정보</div>
+            <div>
+                <p style={{ width: '13vw', height: '20vh', wordWrap: 'break-word', overflow: 'scroll' }}>{nodeJson}</p>
             </div>
         </aside>
     );

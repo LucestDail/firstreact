@@ -1,4 +1,3 @@
-
 // Default Components
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import ReactFlow, {
@@ -16,11 +15,11 @@ import ReactFlow, {
 
 // Custom Components
 import { nodes as initialNodes, edges as initialEdges } from './components/initial-elements';
+import NodebarDetail from './components/NodebarDetail.js';
 import Nodebar from './components/Nodebar.js';
 import Sidebar from './components/Sidebar.js';
 
 // Default Styles
-import 'reactflow/dist/style.css';
 import 'reactflow/dist/style.css';
 
 // Custom Styles
@@ -30,7 +29,7 @@ import './styles/index.css';
 // Lcal Variable
 let id = 0;
 const getId = () => `dndnode_${id++}`;
-let nodeJson = {};
+let nodeJson = "";
 // export default app
 export default () => {
 
@@ -39,7 +38,7 @@ export default () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-
+ 
   // Events Definitions
   const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
@@ -59,32 +58,19 @@ export default () => {
         id: getId(),
         type,
         position,
+        className: 'group-a',
+        style: { backgroundColor: 'rgba(255, 0, 0, 0.2)', width: 200, height: 100 },
         data: { label: `${type} node` },
+        itemNumber: 0,
       };
       setNodes((nds) => nds.concat(newNode));
     },
     [reactFlowInstance],
   );
 
-  const onSave = () => {
-    if(reactFlowInstance){
-      nodeJson = JSON.stringify(reactFlowInstance.toObject());
-      alert(nodeJson);
-    }
-  };
-
-  const onRestore = () => {
-    const flow = JSON.parse(nodeJson);
-    if (flow) {
-      setNodes(flow.nodes || []);
-      setEdges(flow.edges || []);
-    }
-  };
-
   useEffect(() => {
-    if(reactFlowInstance){
+    if (reactFlowInstance) {
       nodeJson = JSON.stringify(reactFlowInstance.toObject());
-      console.log(nodeJson);
     }
   }, [nodes, edges]);
 
@@ -92,7 +78,8 @@ export default () => {
   return (
     <div className="dndflow" style={{ width: '98vw', height: '98vh' }} >
       <ReactFlowProvider>
-        <Nodebar onSave={onSave} onRestore={onRestore} nodeJson={nodeJson} />
+        <Nodebar />
+        <NodebarDetail />
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
@@ -111,7 +98,7 @@ export default () => {
             <Controls />
           </ReactFlow>
         </div>
-        <Sidebar nodes={nodes} setNodes={setNodes} />
+        <Sidebar nodeJson={nodeJson} nodes={nodes} setNodes={setNodes} />
       </ReactFlowProvider>
     </div>
   );

@@ -74,6 +74,19 @@
     align-items: center;
     cursor: grab;
   }
+
+  .dndflow .dndnode.dndgroup{
+    height: 20px;
+    padding: 4px;
+    border: 1px solid #4bd262;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    background-color: 'rgba(255, 0, 0, 0.2)';
+  }
   
   .dndflow .dndnode.input {
     border-color: #0041d0;
@@ -103,3 +116,24 @@
     }
   }
   
+.aside-container {
+  height: 100%;
+  background-color: white;
+  z-index: 1;
+}
+
+.left0{
+  position:absolute;
+  left: 0%;
+}
+
+.left1{
+  position: absolute;
+  left:14%;
+}
+
+.group-a{
+  background-color: 'rgba(255, 0, 0, 0.2)';
+  width: 200;
+  height: 200;
+}
