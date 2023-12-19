@@ -10,6 +10,7 @@ import ReactFlow, {
   Controls,
   applyNodeChanges,
   MiniMap,
+  MarkerType,
   Background,
 } from 'reactflow';
 
@@ -26,10 +27,22 @@ import 'reactflow/dist/style.css';
 import './styles/overview.css';
 import './styles/index.css';
 
-// Lcal Variable
+// Local Variable
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 let nodeJson = "";
+const connectionLineStyle = { stroke: '#000' };
+
+// Custom Definition
+const defaultEdgeOptions = {
+  style: { strokeWidth: 3, stroke: 'black' },
+  type: 'floating',
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    color: 'black',
+  },
+};
+
 // export default app
 export default () => {
 
@@ -38,10 +51,15 @@ export default () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
- 
+
   // Events Definitions
   const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+  //const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+  const onConnect = useCallback(
+    (params) =>
+      setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: '#000' } }, eds)),
+    []
+  );
   const onDragOver = useCallback((event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }, []);
   const onDrop = useCallback(
     (event) => {
@@ -57,6 +75,8 @@ export default () => {
       const newNode = {
         id: getId(),
         type,
+        sourcePosition: 'right',
+        targetPosition: 'left',
         position,
         className: 'group-a',
         style: { backgroundColor: 'rgba(255, 0, 0, 0.2)', width: 200, height: 100 },
@@ -91,6 +111,8 @@ export default () => {
             onInit={setReactFlowInstance}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            connectionLineStyle={connectionLineStyle}
+            defaultEdgeOptions={defaultEdgeOptions}
             attributionPosition="top-right"
           >
             <MiniMap style={{ height: 120 }} zoomable pannable />

@@ -22,12 +22,13 @@ export default () => {
     });
 
     const onClick = useCallback(() => {
+        
         const id = `${++nodeId}`;
         const newNode = {
             id,
             position: {
-                x: currentSelectedNode.position.x * ++currentSelectedNode.itemNumber,
-                y: currentSelectedNode.position.y * ++currentSelectedNode.itemNumber,
+                x: 0,
+                y: (currentSelectedNode.itemNumber * 40),
             },
             data: {
                 label: `Node ${id}`,
@@ -35,13 +36,15 @@ export default () => {
             className: 'item-a',
             parentNode: currentSelectedNode.id,
         };
-        reactFlowInstance.addNodes(newNode);
         currentSelectedNode.itemNumber += 1;
+        reactFlowInstance.addNodes(newNode);
+        
     }, []);
     return (
         <>
             {selectedNodes.length === 1 && currentSelectedNode.className.indexOf('group') > -1?
                 <aside className="aside-container left1">
+                    <div>{selectedNodes}</div>
                     <div className="description">노드 추가하기</div>
                     <button onClick={onClick} className="btn-add">
                         add node
