@@ -94,12 +94,11 @@ export default () => {
     }
   }, [nodes, edges]);
 
-
   return (
-    <div className="dndflow" style={{ width: '98vw', height: '98vh' }} >
+    <div className="dndflow" style={{ width: '98vw', height: '85vh' }} >
       <ReactFlowProvider>
-        <Nodebar />
-        <NodebarDetail />
+        <Nodebar setNodes={setNodes} setEdges={setEdges} nodes={nodes} edges={edges} />
+        <NodebarDetail setNodes={setNodes} />
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}

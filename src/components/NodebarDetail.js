@@ -3,7 +3,7 @@ import { useReactFlow, ReactFlowProvider, useStore, useOnSelectionChange } from 
 
 let nodeId = 0;
 let currentSelectedNode = {};
-export default () => {
+export default ({ setNodes }) => {
 
     // react component definitions
     const reactFlowInstance = useReactFlow();
@@ -27,8 +27,8 @@ export default () => {
         const newNode = {
             id,
             position: {
-                x: 0,
-                y: (currentSelectedNode.itemNumber * 40),
+                x: 20,
+                y: 60 + (currentSelectedNode.itemNumber * 40),
             },
             data: {
                 label: `Node ${id}`,
@@ -36,10 +36,24 @@ export default () => {
             className: 'item-a',
             parentNode: currentSelectedNode.id,
         };
-        currentSelectedNode.itemNumber += 1;
+        setNodes((nds) =>
+            nds.map((node) => {
+                if (node.id === currentSelectedNode.id) {
+                    node.data = {
+                        ...node.data,
+                    }
+                    node.style.height = node.style.height + 40;
+                    node.itemNumber =  node.itemNumber + 1
+                    // set latest selected node information
+                    currentSelectedNode = node;
+                }
+                return node;
+            })
+        );
         reactFlowInstance.addNodes(newNode);
         
     }, []);
+
     return (
         <>
             {selectedNodes.length === 1 && currentSelectedNode.className.indexOf('group') > -1?
