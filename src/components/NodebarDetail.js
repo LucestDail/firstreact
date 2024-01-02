@@ -1,7 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { useReactFlow, ReactFlowProvider, useStore, useOnSelectionChange } from 'reactflow';
+import React, { useCallback, useState } from 'react';
+import { useReactFlow, useOnSelectionChange } from 'reactflow';
 
-let nodeId = 0;
 let currentSelectedNode = {};
 export default ({ setNodes }) => {
 
@@ -23,7 +22,7 @@ export default ({ setNodes }) => {
 
     const onClick = useCallback(() => {
         
-        const id = `${++nodeId}`;
+        const id = "item_" + crypto.randomUUID();
         const newNode = {
             id,
             position: {
@@ -31,8 +30,15 @@ export default ({ setNodes }) => {
                 y: 60 + (currentSelectedNode.itemNumber * 40),
             },
             data: {
-                label: `Node ${id}`,
+                label: `item`,
             },
+            draggable : false,
+            //dragHandle: '.custom-drag-handle',
+            style: {
+                zIndex: '1001',
+                border: '1px solid #ddd',
+                background: 'white',
+              },
             className: 'item-a',
             parentNode: currentSelectedNode.id,
         };

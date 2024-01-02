@@ -25,7 +25,7 @@ export default ({ setNodes, setEdges, nodes, edges }) => {
         setMessage(event.target.value);
     };
 
-    async function readFile(event){
+    async function readFile(event) {
         const file = event.target.files.item(0)
         const text = await file.text();
         document.getElementById("message").value = text;
@@ -44,12 +44,27 @@ export default ({ setNodes, setEdges, nodes, edges }) => {
             <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'output')} draggable>
                 마지막 노드
             </div>
+            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'customBoxNode')} draggable>
+                커스텀 박스
+            </div>
+            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node1')} draggable>
+                첫인사
+            </div>
+            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node2')} draggable>
+                node 2
+            </div>
+            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node3')} draggable>
+                node 3
+            </div>
+            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node4')} draggable>
+                node 4
+            </div>
             <button disabled={!message} onClick={onRestore} className="btn-add">
                 import react flow
             </button>
             <input type="file" onChange={readFile}></input>
             <textarea
-                style={{ width: '13vw', height: '60vh', wordWrap: 'break-word', overflow: 'scroll' }}
+                style={{ width: '13vw', height: '40vh', wordWrap: 'break-word', overflow: 'scroll' }}
                 id="message"
                 name="message"
                 value={message}

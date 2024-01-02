@@ -1,10 +1,14 @@
 // Default Components
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef
+} from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
-  useNodes,
-  useEdges,
+  getConnectedEdges,
   useNodesState,
   useEdgesState,
   Controls,
@@ -19,6 +23,11 @@ import { nodes as initialNodes, edges as initialEdges } from './components/initi
 import NodebarDetail from './components/NodebarDetail.js';
 import Nodebar from './components/Nodebar.js';
 import Sidebar from './components/Sidebar.js';
+import CustomBoxNode from './components/CustomBoxNode';
+import Node1 from './components/Node1';
+import Node2 from './components/Node2';
+import Node3 from './components/Node3';
+import Node4 from './components/Node4';
 
 // Default Styles
 import 'reactflow/dist/style.css';
@@ -28,19 +37,26 @@ import './styles/overview.css';
 import './styles/index.css';
 
 // Local Variable
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = () => "box_" + crypto.randomUUID();
 let nodeJson = "";
 const connectionLineStyle = { stroke: '#000' };
 
 // Custom Definition
 const defaultEdgeOptions = {
   style: { strokeWidth: 3, stroke: 'black' },
-  type: 'floating',
   markerEnd: {
     type: MarkerType.ArrowClosed,
     color: 'black',
   },
+};
+
+// Custom nodeTypes
+const nodeTypes = {
+  customBoxNode: CustomBoxNode,
+  node1: Node1,
+  node2: Node2,
+  node3: Node3,
+  node4: Node4,
 };
 
 // export default app
@@ -53,14 +69,62 @@ export default () => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   // Events Definitions
+  // node change event
   const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
-  //const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+
+  // node delete event
+  const onNodesDelete = useCallback(
+    (deleted) => {
+      if (deleted[0].parentNode) {  // item node delete process
+        setEdges(
+          deleted.reduce((acc, node) => {
+            const connectedEdges = getConnectedEdges([node], edges);
+            const remainingEdges = acc.filter((edge) => !connectedEdges.includes(edge));
+            return [...remainingEdges];
+          }, edges)
+        );
+
+        // delete current node's child nodes parent itemNumber and move item's position
+
+        // setNodes(
+        //   deleted.reduce((acc, node) => {
+        //     const remainingNodes = acc.filter((nd) => node.id !== nd.parentNode);
+        //     return [...remainingNodes];
+        //   }, nodes)
+        // )
+      } else {  // box node delete process
+        // delete current node's connected edges
+        setEdges(
+          deleted.reduce((acc, node) => {
+            const connectedEdges = getConnectedEdges([node], edges);
+            const remainingEdges = acc.filter((edge) => !connectedEdges.includes(edge));
+            return [...remainingEdges];
+          }, edges)
+        );
+
+        // delete current node's child nodes
+        setNodes(
+          deleted.reduce((acc, node) => {
+            const remainingNodes = acc.filter((nd) => node.id !== nd.parentNode);
+            return [...remainingNodes];
+          }, nodes)
+        )
+      }
+
+    },
+    [nodes, edges]
+  );
+
+  // node connect event
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: '#000' } }, eds)),
     []
   );
+  // node drag event
   const onDragOver = useCallback((event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }, []);
+
+  // node drop event
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -75,12 +139,16 @@ export default () => {
       const newNode = {
         id: getId(),
         type,
-        sourcePosition: 'right',
-        targetPosition: 'left',
+        sourcePosition: 'bottom',
+        targetPosition: 'top',
         position,
         className: 'group-a',
         style: { backgroundColor: 'rgba(255, 0, 0, 0.2)', width: 200, height: 100 },
-        data: { label: `${type} node` },
+        data: {
+          label: `${type} node`,
+          setNodes: { setNodes },
+          reactFlowInstance: {reactFlowInstance}
+        },
         itemNumber: 0,
       };
       setNodes((nds) => nds.concat(newNode));
@@ -88,6 +156,7 @@ export default () => {
     [reactFlowInstance],
   );
 
+  // inject reactFlow nodes to global variable, defined as "nodeJson", so developers can access current node status infomation
   useEffect(() => {
     if (reactFlowInstance) {
       nodeJson = JSON.stringify(reactFlowInstance.toObject());
@@ -103,6 +172,7 @@ export default () => {
           <ReactFlow
             nodes={nodes}
             edges={edges}
+            onNodesDelete={onNodesDelete}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
@@ -110,8 +180,10 @@ export default () => {
             onInit={setReactFlowInstance}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            nodeTypes={nodeTypes}
             connectionLineStyle={connectionLineStyle}
             defaultEdgeOptions={defaultEdgeOptions}
+            multiSelectionKeyCode=""
             attributionPosition="top-right"
           >
             <MiniMap style={{ height: 120 }} zoomable pannable />
