@@ -52,7 +52,7 @@ const defaultEdgeOptions = {
 
 // Custom nodeTypes
 const nodeTypes = {
-  customBoxNode: CustomBoxNode,
+  //customBoxNode: CustomBoxNode,
   node1: Node1,
   node2: Node2,
   node3: Node3,
@@ -145,9 +145,7 @@ export default () => {
         className: 'group-a',
         style: { backgroundColor: 'rgba(255, 0, 0, 0.2)', width: 200, height: 100 },
         data: {
-          label: `${type} node`,
-          setNodes: { setNodes },
-          reactFlowInstance: {reactFlowInstance}
+          label: `${type} node`
         },
         itemNumber: 0,
       };

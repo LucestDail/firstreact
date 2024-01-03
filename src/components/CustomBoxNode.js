@@ -10,15 +10,10 @@ import ReactFlow, {
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 
 let currentSelectedNode = {};
-let setNodes;
-let reactFlowInstance;
 export default ({ data, isConnectable }) => {
-  setNodes = data.setNodes;
-  reactFlowInstance = data.reactFlowInstance;
-
   // react component definitions
-  //const reactFlowInstance = useReactFlow();
-  // const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const reactFlowInstance = useReactFlow();
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   // selected node definitions
@@ -51,8 +46,8 @@ export default ({ data, isConnectable }) => {
       parentNode: currentSelectedNode.id,
     };
 
-    data.setNodes(
-      data.reactFlowInstance.getNodes().map((node) => {
+    setNodes(
+      reactFlowInstance.getNodes().map((node) => {
         if (node.id === currentSelectedNode.id) {
           node.data = {
             ...node.data,

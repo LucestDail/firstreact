@@ -44,20 +44,20 @@ export default ({ setNodes, setEdges, nodes, edges }) => {
             <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'output')} draggable>
                 마지막 노드
             </div>
-            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'customBoxNode')} draggable>
+            {/* <div className="dndnode" onDragStart={(event) => onDragStart(event, 'customBoxNode')} draggable>
                 커스텀 박스
-            </div>
+            </div> */}
             <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node1')} draggable>
-                첫인사
+                테스트1
             </div>
             <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node2')} draggable>
-                node 2
+                테스트2
             </div>
             <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node3')} draggable>
-                node 3
+                테스트3
             </div>
             <div className="dndnode" onDragStart={(event) => onDragStart(event, 'node4')} draggable>
-                node 4
+                테스트4
             </div>
             <button disabled={!message} onClick={onRestore} className="btn-add">
                 import react flow
