@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useReactFlow, useOnSelectionChange } from 'reactflow';
-
+import uuid from 'react-uuid'
 let currentSelectedNode = {};
 export default ({ setNodes }) => {
 
@@ -22,7 +22,7 @@ export default ({ setNodes }) => {
 
     const onClick = useCallback(() => {
         
-        const id = "item_" + crypto.randomUUID();
+        const id = "item_" + uuid();
         const newNode = {
             id,
             position: {

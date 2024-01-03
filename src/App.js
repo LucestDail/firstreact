@@ -17,7 +17,7 @@ import ReactFlow, {
   MarkerType,
   Background,
 } from 'reactflow';
-
+import uuid from 'react-uuid'
 // Custom Components
 import { nodes as initialNodes, edges as initialEdges } from './components/initial-elements';
 import NodebarDetail from './components/NodebarDetail.js';
@@ -37,7 +37,7 @@ import './styles/overview.css';
 import './styles/index.css';
 
 // Local Variable
-const getId = () => "box_" + crypto.randomUUID();
+const getId = () => "box_" + uuid();
 let nodeJson = "";
 const connectionLineStyle = { stroke: '#000' };
 
