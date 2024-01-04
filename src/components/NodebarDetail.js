@@ -21,7 +21,6 @@ export default ({ setNodes }) => {
     });
 
     const onClick = useCallback(() => {
-        
         const id = "item_" + uuid();
         const newNode = {
             id,
@@ -33,7 +32,6 @@ export default ({ setNodes }) => {
                 label: `item`,
             },
             draggable : false,
-            //dragHandle: '.custom-drag-handle',
             style: {
                 zIndex: '1001',
                 border: '1px solid #ddd',
@@ -41,6 +39,7 @@ export default ({ setNodes }) => {
               },
             className: 'item-a',
             parentNode: currentSelectedNode.id,
+            itemOrder: currentSelectedNode.itemNumber,
         };
         setNodes((nds) =>
             nds.map((node) => {
@@ -71,7 +70,9 @@ export default ({ setNodes }) => {
                     </button>
                 </aside>
                 :
-                <></>
+                <aside className="aside-container left1">
+                    <div>{selectedNodes}</div>
+                </aside>
             }
         </>
     );
