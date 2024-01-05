@@ -139,6 +139,7 @@
 }
 
 .group-empty{
-  /* background-color: white; */
-  /* border-color: white; */
+  background-color: white;
+  border-color: white;
+  visibility: hidden;
 }
