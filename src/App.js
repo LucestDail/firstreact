@@ -1,87 +1,36 @@
-// Default Components
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef
-} from 'react';
-import ReactFlow, {
-  ReactFlowProvider,
-  addEdge,
-  getConnectedEdges,
-  useNodesState,
-  useEdgesState,
-  Controls,
-  applyNodeChanges,
-  MiniMap,
-  MarkerType,
-  Background,
-} from 'reactflow';
-import FlowBuilder, {
-  NodeContext
-} from "react-flow-builder";
-import uuid from 'react-uuid'
-// Custom Components
-import { nodes as initialNodes, edges as initialEdges } from './components/initial-elements.js';
-import NodebarDetail from './components/NodebarDetail.js';
-import Nodebar from './components/Nodebar.js';
-import Sidebar from './components/Sidebar.js';
-import CustomBoxNode from './components/CustomBoxNode.js';
-import EmptyBox from './components/EmptyBox.js';
-import Node1 from './components/Node1.jsx';
-import Node2 from './components/Node2.jsx';
-import Node3 from './components/Node3.jsx';
-import Node4 from './components/Node4.jsx';
-import ButtonEdge from './components/ButtonEdge';
-
-// Default Styles
-import 'reactflow/dist/style.css';
-
-// Custom Styles
-import './styles/overview.css';
+/********************* Library area *********************/
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import ReactFlow, { ReactFlowProvider, addEdge, getConnectedEdges, useNodesState, useEdgesState, Controls, applyNodeChanges, MiniMap, Background, } from 'reactflow';
+/********************* Components area *********************/
+import NodebarDetail from './components/nav/NodebarDetail.js';
+import Nodebar from './components/nav/Nodebar.js';
+import Sidebar from './components/nav/Sidebar.js';
+/********************* Module area *********************/
+import getId from './modules/uuid.js';
+/********************* Style area *********************/
 import './styles/index.css';
-
-// Local Variable
-const getId = () => uuid();
+import 'reactflow/dist/style.css';
+import './styles/overview.css';
+import './styles/main.css';
+/********************* Option area *********************/
+import connectionLineStyle from './options/ConnectionLineStyle.js'
+import defaultEdgeOptions from './options/DefaultEdgeOptions.js';
+import nodeTypes from './options/NodeTypes.js';
+import edgeTypes from './options/EdgeTypes.js';
+import NewNodeOption from './options/NewNodeOption.js';
+import EmptyNodeOption from './options/EmptyNodeOption.js';
+import EmptyEdgeOption from './options/newEdgeOption.js';
+import InitBoxOption from './options/InitBoxOption.js';
+import InitEdgeOption from './options/InitEdgeOption.js';
+/********************* Local Definition area *********************/
 let nodeJson = "";
-const connectionLineStyle = { stroke: '#000' };
-
-// Custom Definition
-const defaultEdgeOptions = {
-  style: { strokeWidth: 3, stroke: 'black' },
-  markerEnd: {
-    type: MarkerType.ArrowClosed,
-    color: 'black',
-  },
-};
-
-// Custom nodeTypes
-const nodeTypes = {
-  //customBoxNode: CustomBoxNode,
-  emptyBox: EmptyBox,
-  node1: Node1,
-  node2: Node2,
-  node3: Node3,
-  node4: Node4,
-};
-const edgeTypes = {
-  buttonedge: ButtonEdge,
-};
-
-// export default app
+/********************* Main area *********************/
 export default () => {
-
-  // react component definitions
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(InitBoxOption);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(InitEdgeOption);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-
-  // Events Definitions
-  // node change event
   const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
-
-  // node delete event
   const onNodesDelete = useCallback(
     (deleted) => {
       if (deleted[0].parentNode) {  // item node delete process
@@ -92,7 +41,6 @@ export default () => {
             return [...remainingEdges];
           }, edges)
         );
-
         setNodes(
           nodes.filter((node) => node.id !== deleted[0].id).map((node) => {
             if (node.id === deleted[0].parentNode) {
@@ -103,7 +51,6 @@ export default () => {
             return node;
           })
         )
-
         nodes.filter((node) => node.id !== deleted[0].id).map((node) => {
           if (node.id === deleted[0].parentNode) {
             node.height -= 40;
@@ -113,11 +60,7 @@ export default () => {
           return node;
         });
 
-        // console.log(currentItems.sort(function (a, b) { return a.itemOrder - b.itemOrder }));
-        // delete current node's child nodes parent itemNumber and move item's position
-
-      } else {  // box node delete process
-        // delete current node's connected edges
+      } else {
         setEdges(
           deleted.reduce((acc, node) => {
             const connectedEdges = getConnectedEdges([node], edges);
@@ -125,8 +68,6 @@ export default () => {
             return [...remainingEdges];
           }, edges)
         );
-
-        // delete current node's child nodes
         setNodes(
           deleted.reduce((acc, node) => {
             const remainingNodes = acc.filter((nd) => node.id !== nd.parentNode);
@@ -134,25 +75,20 @@ export default () => {
           }, nodes)
         )
       }
-
     },
     [nodes, edges]
   );
-
-  // node connect event
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) => addEdge({ ...params, type: 'buttonedge', animated: true, style: { stroke: '#000' } }, eds)),
     []
   );
-  // node drag event
   const onDragOver = useCallback((event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }, []);
-
-  // node drop event
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
       const type = event.dataTransfer.getData('application/reactflow');
+      const emptyNodeId = 'empty_' + getId();
       if (typeof type === 'undefined' || !type) {
         return;
       }
@@ -160,65 +96,22 @@ export default () => {
         x: event.clientX,
         y: event.clientY,
       });
-      const newNode = {
-        id: 'box_' + getId(),
-        type,
-        sourcePosition: 'bottom',
-        targetPosition: 'top',
-        position,
-        className: 'group-a',
-        style: { backgroundColor: 'rgba(255, 0, 0, 0.2)', width: 200, height: 100 },
-        data: {
-          label: `${type} node`
-        },
-        itemNumber: 0,
-      };
+      const newNode = NewNodeOption(type, position, emptyNodeId);
       setNodes((nds) => nds.concat(newNode));
       if (type !== 'output') {
-
-        const emptyPosition = {
-          x: 0,
-          y: 200,
-        };
-        const emptyNode = {
-          id: 'empty_' + getId(),
-          type: 'emptyBox',
-          targetPosition: 'top',
-          position: emptyPosition,
-          className: 'group-empty',
-          draggable : false,
-          selectable: false,
-          deletable: false,
-          style: { backgroundColor: 'rgba(255, 0, 0, 0)', width: 200, height: 100},
-          parentNode: newNode.id,
-          itemNumber: 0,
-        }
-        const newEdge = {
-          source: newNode.id,
-          target: emptyNode.id,
-          animated: true,
-          draggable : false,
-          style: { stroke: '#000' },
-          id: 'edge_' + getId(),
-          type: 'buttonedge',
-          deletable : false,
-          selectable: false,
-          data: {emptyNode : emptyNode.id},
-        }
+        const emptyNode = EmptyNodeOption(emptyNodeId, newNode.id);
+        const newEdge = EmptyEdgeOption(newNode.id, emptyNode.id);
         setEdges((eds) => eds.concat(newEdge));
         setNodes((nds) => nds.concat(emptyNode));
       }
     },
     [reactFlowInstance],
   );
-
-  // inject reactFlow nodes to global variable, defined as "nodeJson", so developers can access current node status infomation
   useEffect(() => {
     if (reactFlowInstance) {
       nodeJson = JSON.stringify(reactFlowInstance.toObject());
     }
   }, [nodes, edges]);
-
   return (
     <div className="dndflow" style={{ width: '98vw', height: '85vh' }} >
       <ReactFlowProvider>

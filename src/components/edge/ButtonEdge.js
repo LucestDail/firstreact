@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-    BaseEdge,
-    EdgeLabelRenderer,
-    EdgeProps,
-    getBezierPath,
-    useReactFlow,
-} from 'reactflow';
-import uuid from 'react-uuid'
-import '../styles/buttonedge.css';
-
-const getId = () => uuid();
+import {BaseEdge,EdgeLabelRenderer,EdgeProps,getBezierPath,useReactFlow,} from 'reactflow';
+import uuid from '../../modules/uuid.js';
+import '../../styles/buttonedge.css';
+import EmptyEdgeOption from '../../options/EmptyEdgeOption.js';
+import NewEdgeOption from '../../options/newEdgeOption.js';
+import EmptyNodeOption from '../../options/EmptyNodeOption.js';
 export default function CustomEdge({
     id,
     sourceX,
@@ -39,8 +34,8 @@ export default function CustomEdge({
     };
     const onPlus = () => {
         const newNode = {
-            id: 'box_' + getId(),
-            type: 'default',
+            id: 'box_' + uuid(),
+            type: 'xtrmBox',
             sourcePosition: 'bottom',
             targetPosition: 'top',
             position: {
@@ -48,7 +43,14 @@ export default function CustomEdge({
                 y: getNode(target).position.y,
             },
             className: 'group-a',
-            style: { backgroundColor: 'rgba(255, 0, 0, 0.2)', width: 200, height: 100 },
+            style: {
+                backgroundColor: 'rgba(255, 0, 0, 0)',
+                width: 200,
+                height: 100,
+                borderWidth: 2,
+                borderRadius: 5,
+                borderStyle: 'solid'
+            },
             data: {
                 label: 'added node',
             },
@@ -57,42 +59,10 @@ export default function CustomEdge({
             draggable: false,
             deletable: false,
         };
-        const emptyNode = {
-            id: 'empty_' + getId(),
-            type: 'emptyBox',
-            targetPosition: 'top',
-            position: {
-                x: 0,
-                y: 200,
-            },
-            className: 'group-empty',
-            draggable: false,
-            selectable: false,
-            deletable: false,
-            style: { backgroundColor: 'rgba(255, 0, 0, 0)', width: 200, height: 100 },
-            parentNode: newNode.id,
-            itemNumber: 0,
-        }
-        const newEdge = {
-            id: 'edge_' + getId(),
-            source: source,
-            target: newNode.id,
-            animated: true,
-            deletable: false,
-            selectable: false,
-            draggable: false,
-        }
-        const emptyEdge = {
-            source: newNode.id,
-            target: emptyNode.id,
-            animated: true,
-            style: { stroke: '#000' },
-            id: 'edge_' + getId(),
-            type: 'buttonedge',
-            draggable: false,
-            deletable: false,
-            selectable: false,
-        }
+        
+        const emptyNode = EmptyNodeOption('empty_' + uuid(), newNode.id);
+        const newEdge = NewEdgeOption(source, newNode.id);
+        const emptyEdge = EmptyEdgeOption(newNode.id, emptyNode.id);
         setNodes((nodes) => nodes.filter((node) => node.id !== target).concat(newNode).concat(emptyNode));
         setEdges((edges) => edges.filter((edge) => edge.id !== id).concat(newEdge).concat(emptyEdge));
     };

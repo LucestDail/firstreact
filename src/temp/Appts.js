@@ -7,7 +7,7 @@ import {
   DrawerComponent,
   PopconfirmComponent,
   PopoverComponent
-} from "./antd/index.tsx";
+} from "../antd/index.tsx";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -22,7 +22,7 @@ import ReactFlow, {
 } from 'reactflow';
 
 import "./index.css";
-import { startingNodes } from "./startingNodes.ts";
+import { startingNodes } from "../startingNodes.ts";
 
 const StartNodeDisplay = () => {
   const node = useContext(NodeContext);

@@ -10,10 +10,10 @@ import ReactFlow, {
   ReactFlowProvider,
 } from 'reactflow';
 
-import { nodes as initialNodes, edges as initialEdges } from './components/initial-elements';
+import { nodes as initialNodes, edges as initialEdges } from '../components/initial-elements.js';
 import CustomNode from './components/CustomNode';
-import Sidebar from './components/Sidebar.js';
-import Nodebar from './components/Nodebar.js';
+import Sidebar from '../components/Sidebar.js';
+import Nodebar from '../components/Nodebar.js';
 import 'reactflow/dist/style.css';
 import './styles/overview.css';
 import './styles/index.css';

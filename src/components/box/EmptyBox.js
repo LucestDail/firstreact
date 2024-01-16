@@ -1,8 +1,5 @@
 import React from 'react';
-import ReactFlow, {
-  Handle,
-  Position,
-} from 'reactflow';
+import ReactFlow, {Handle,Position,} from 'reactflow';
 export default ({ data, isConnectable }) => {
   return (
     <>
