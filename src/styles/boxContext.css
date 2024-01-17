@@ -1,0 +1,78 @@
+
+.context-menu {
+    background: white;
+    /* border-style: solid; */
+    box-shadow: 10px 19px 20px rgba(0, 0, 0, 10%);
+    position: absolute;
+    z-index: 10;
+    width:52px;
+  }
+  
+  .context-menu .BtnLnb {
+    border: none;
+    display: block;
+    padding: 0.5em;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .context-menu .BtnLnb:hover {
+    background: white;
+  }
+
+  
+.Ico0090Text{
+    background-image: url('../assets/ico_0090_text.svg');
+}
+
+.Ico0091Sound{
+    background-image: url('../assets/ico_0091_sound.svg');
+}
+
+.Ico0139Photo{
+    background-image: url('../assets/ico_0139_photo.svg');
+}
+
+.Ico0289Card{
+    background-image: url('../assets/ico_0289_card.svg');
+}
+
+.Ico0095Button{
+    background-image: url('../assets/ico_0095_button.svg');
+}
+
+.Ico0093Carousel{
+    background-image: url('../assets/ico_0093_carousel.svg');
+}
+
+.Ico0092Accordion{
+    background-image: url('../assets/ico_0092_accordion.svg');
+}
+
+.Ico0043Detail{
+    background-image: url('../assets/ico_0043_detail.svg');
+}
+
+.Ico0008Cal{
+    background-image: url('../assets/ico_0008_cal.svg');
+}
+
+.Ico0032Time{
+    background-image: url('../assets/ico_0032_time.svg');
+}
+
+.Ico0058Link{
+    background-image: url('../assets/ico_0058_link.svg');
+}
+
+.Ico0094Book{
+    background-image: url('../assets/ico_0094_book.svg');
+}
+
+.Ico0293Api{
+    background-image: url('../assets/ico_0293_api.svg');
+}
+
+.Ico0219Dashboard{
+    background-image: url('../assets/ico_0219_dashboard.svg');
+}

@@ -1,4 +1,4 @@
-import uuid from '../modules/uuid.js';
+import uuid from '../modules/XtrmUUID.js';
 export default (parentNodeId, parentNodeItemNumber) => {
     return {
         id: 'item_' + uuid(),

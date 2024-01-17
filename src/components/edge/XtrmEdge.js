@@ -5,7 +5,6 @@ import '../../styles/buttonedge.css';
 import EmptyEdgeOption from '../../options/EmptyEdgeOption.js';
 import NewEdgeOption from '../../options/newEdgeOption.js';
 import EmptyNodeOption from '../../options/EmptyNodeOption.js';
-import NewBoxOption from '../../options/NewBoxOption.js';
 export default function({
     id,
     sourceX,
@@ -30,20 +29,10 @@ export default function({
     });
 
     const onMinus = () => {
-        setEdges((edges) => edges.filter((edge) => edge.id !== id));
-        setNodes((nodes) => nodes.filter((node) => node.id !== target));
+        console.log('minus');
     };
     const onPlus = () => {
-        const position = {
-            x: 0,
-            y: getNode(target).position.y,
-        }
-        const newNode = NewBoxOption('xtrmBox', position, source);
-        const emptyNode = EmptyNodeOption('empty_' + uuid(), newNode.id);
-        const newEdge = NewEdgeOption(source, newNode.id);
-        const emptyEdge = EmptyEdgeOption(newNode.id, emptyNode.id);
-        setNodes((nodes) => nodes.filter((node) => node.id !== target).concat(newNode).concat(emptyNode));
-        setEdges((edges) => edges.filter((edge) => edge.id !== id).concat(newEdge).concat(emptyEdge));
+        console.log('onPlus');
     };
     return (
         <>

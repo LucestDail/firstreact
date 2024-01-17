@@ -5,8 +5,9 @@ import ReactFlow, { ReactFlowProvider, addEdge, getConnectedEdges, useNodesState
 import NodebarDetail from './components/nav/NodebarDetail.js';
 import Nodebar from './components/nav/Nodebar.js';
 import Sidebar from './components/nav/Sidebar.js';
+import ContextMenu from './components/context/XtrmBoxContext.js';
 /********************* Module area *********************/
-import getId from './modules/uuid.js';
+import getId from './modules/XtrmUUID.js';
 /********************* Style area *********************/
 import './styles/index.css';
 import 'reactflow/dist/style.css';
@@ -22,14 +23,17 @@ import EmptyNodeOption from './options/EmptyNodeOption.js';
 import EmptyEdgeOption from './options/newEdgeOption.js';
 import InitBoxOption from './options/InitBoxOption.js';
 import InitEdgeOption from './options/InitEdgeOption.js';
+import XtrmEdgeOption from './options/XtrmEdgeOption.js';
 /********************* Local Definition area *********************/
 let nodeJson = "";
+let xtrmParameters = ""; 
 /********************* Main area *********************/
 export default () => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(InitBoxOption);
   const [edges, setEdges, onEdgesChange] = useEdgesState(InitEdgeOption);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const [menu, setMenu] = useState(null);
   const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
   const onNodesDelete = useCallback(
     (deleted) => {
@@ -101,12 +105,29 @@ export default () => {
       if (type !== 'output') {
         const emptyNode = EmptyNodeOption(emptyNodeId, newNode.id);
         const newEdge = EmptyEdgeOption(newNode.id, emptyNode.id);
+        //const newEdge = XtrmEdgeOption(newNode.id, emptyNode.id);
         setEdges((eds) => eds.concat(newEdge));
         setNodes((nds) => nds.concat(emptyNode));
       }
     },
     [reactFlowInstance],
   );
+  const onNodeContextMenu = useCallback(
+    (event, node) => {
+      event.preventDefault();
+      const pane = reactFlowWrapper.current.getBoundingClientRect();
+      setMenu({
+        id: node.id,
+        top: event.clientY < pane.height - 200 && event.clientY,
+        left: event.clientX < pane.width - 200 && event.clientX,
+        right: event.clientX >= pane.width - 200 && pane.width - event.clientX,
+        bottom:
+          event.clientY >= pane.height - 200 && pane.height - event.clientY,
+      });
+    },
+    [setMenu],
+  );
+  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
   useEffect(() => {
     if (reactFlowInstance) {
       nodeJson = JSON.stringify(reactFlowInstance.toObject());
@@ -133,12 +154,15 @@ export default () => {
             edgeTypes={edgeTypes}
             connectionLineStyle={connectionLineStyle}
             defaultEdgeOptions={defaultEdgeOptions}
+            onNodeContextMenu={onNodeContextMenu}
+            onPaneClick={onPaneClick}
             multiSelectionKeyCode=""
             attributionPosition="top-right"
           >
             <MiniMap style={{ height: 120 }} zoomable pannable />
             <Background color="#aaa" gap={16} />
             <Controls />
+            {menu && <ContextMenu onClick={onPaneClick} {...menu} />}
           </ReactFlow>
         </div>
         <Sidebar nodeJson={nodeJson} nodes={nodes} setNodes={setNodes} />

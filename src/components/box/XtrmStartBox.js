@@ -25,7 +25,6 @@ export default ({ data, isConnectable }) => {
                     node.itemNumber = node.itemNumber + 1;
                     currentSelectedNode = node;
                 }
-                // empty node style resizing
                 if (node.id === currentSelectedNode.emptyNodeId) {
                     node.data = {
                         ...node.data,

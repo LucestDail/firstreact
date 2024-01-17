@@ -1,5 +1,5 @@
-import uuid from '../modules/XtrmUUID.js';
-export default (type, position, emptyNodeId) => {
+import uuid from '../modules/XtrmUUID';
+export default (type, position, parentNode) => {
     return {
         id: 'box_' + uuid(),
         type,
@@ -16,9 +16,11 @@ export default (type, position, emptyNodeId) => {
             borderStyle: 'solid'
         },
         data: {
-            label: `${type} node`
+            label: 'added node',
         },
         itemNumber: 0,
-        emptyNodeId: emptyNodeId,
-    };
-}
+        parentNode,
+        draggable: false,
+        deletable: false,
+    }
+};

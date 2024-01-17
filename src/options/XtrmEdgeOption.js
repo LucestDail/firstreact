@@ -7,7 +7,7 @@ export default (source, target) => {
         animated: true,
         style: { stroke: '#000' },
         id: 'edge_' + uuid(),
-        type: 'buttonedge',
+        type: 'xtrmedge',
         draggable: false,
         deletable: false,
         selectable: false,
