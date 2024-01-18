@@ -9,7 +9,7 @@ export default (type, position, emptyNodeId) => {
         className: 'group-a',
         style: {
             backgroundColor: 'rgba(255, 0, 0, 0)',
-            width: 200,
+            width: 280,
             height: 100,
             borderWidth: 2,
             borderRadius: 5,

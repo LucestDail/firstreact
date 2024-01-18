@@ -44,9 +44,6 @@ export default ({ setNodes, setEdges, nodes, edges }) => {
             <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'output')} draggable>
                 마지막 노드
             </div>
-            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'box1')} draggable>
-                테스트1
-            </div>
             <div className="dndnode" onDragStart={(event) => onDragStart(event, 'xtrmStart')} draggable>
                 XtrmStart
             </div>

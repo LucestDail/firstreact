@@ -1,7 +1,8 @@
 import uuid from '../modules/XtrmUUID.js';
-export default (parentNodeId, parentNodeItemNumber) => {
+export default (parentNodeId, parentNodeItemNumber, type) => {
     return {
         id: 'item_' + uuid(),
+        type,
         position: {
           x: 20,
           y: 60 + (parentNodeItemNumber * 40),

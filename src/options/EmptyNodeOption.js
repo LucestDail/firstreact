@@ -11,7 +11,7 @@ export default (nodeId, parentNodeId) => {
         draggable: false,
         selectable: false,
         deletable: false,
-        style: { backgroundColor: 'rgba(255, 0, 0, 0)', width: 200, height: 100 },
+        style: { backgroundColor: 'rgba(255, 0, 0, 0)', width: 280, height: 100 },
         parentNode: parentNodeId,
         itemNumber: 0,
     };

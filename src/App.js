@@ -5,7 +5,7 @@ import ReactFlow, { ReactFlowProvider, addEdge, getConnectedEdges, useNodesState
 import NodebarDetail from './components/nav/NodebarDetail.js';
 import Nodebar from './components/nav/Nodebar.js';
 import Sidebar from './components/nav/Sidebar.js';
-import ContextMenu from './components/context/XtrmBoxContext.js';
+import ContextMenu from './components/context/XtrmItemContext.js';
 /********************* Module area *********************/
 import getId from './modules/XtrmUUID.js';
 /********************* Style area *********************/
@@ -26,7 +26,7 @@ import InitEdgeOption from './options/InitEdgeOption.js';
 import XtrmEdgeOption from './options/XtrmEdgeOption.js';
 /********************* Local Definition area *********************/
 let nodeJson = "";
-let xtrmParameters = ""; 
+let xtrmParameters = "";
 /********************* Main area *********************/
 export default () => {
   const reactFlowWrapper = useRef(null);
@@ -121,8 +121,7 @@ export default () => {
         top: event.clientY < pane.height - 200 && event.clientY,
         left: event.clientX < pane.width - 200 && event.clientX,
         right: event.clientX >= pane.width - 200 && pane.width - event.clientX,
-        bottom:
-          event.clientY >= pane.height - 200 && pane.height - event.clientY,
+        bottom: event.clientY >= pane.height - 200 && pane.height - event.clientY,
       });
     },
     [setMenu],
