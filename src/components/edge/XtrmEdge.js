@@ -1,10 +1,6 @@
 import React from 'react';
 import {BaseEdge,EdgeLabelRenderer,EdgeProps,getBezierPath,useReactFlow,} from 'reactflow';
-import uuid from '../../modules/XtrmUUID.js';
 import '../../styles/buttonedge.css';
-import EmptyEdgeOption from '../../options/EmptyEdgeOption.js';
-import NewEdgeOption from '../../options/newEdgeOption.js';
-import EmptyNodeOption from '../../options/EmptyNodeOption.js';
 export default function({
     id,
     sourceX,

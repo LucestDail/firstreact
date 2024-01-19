@@ -925,7 +925,8 @@ h1 {
   font-family: Noto Sans KR;
   font-weight: 400;
   line-height: 18px;
-  word-wrap: break-word
+  word-wrap: break-word;
+  width:100%;
 }
 /* 
 .context-menu {

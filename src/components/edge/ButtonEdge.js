@@ -19,7 +19,7 @@ export default function({
     style = {},
     markerEnd,
 }) {
-    const { setEdges, setNodes, getNode } = useReactFlow();
+    const { setEdges, setNodes, getNode, getNodes } = useReactFlow();
     const [edgePath, labelX, labelY] = getBezierPath({
         sourceX,
         sourceY,
@@ -33,13 +33,13 @@ export default function({
         setEdges((edges) => edges.filter((edge) => edge.id !== id));
         setNodes((nodes) => nodes.filter((node) => node.id !== target));
     };
-    const onPlus = () => {
+    const onPlus = (event) => {
         const position = {
             x: 0,
             y: getNode(target).position.y,
         }
         const newNode = NewBoxOption('xtrmBox', position, source);
-        const emptyNode = EmptyNodeOption('empty_' + uuid(), newNode.id);
+        const emptyNode = EmptyNodeOption(newNode.id);
         const newEdge = NewEdgeOption(source, newNode.id);
         const emptyEdge = EmptyEdgeOption(newNode.id, emptyNode.id);
         setNodes((nodes) => nodes.filter((node) => node.id !== target).concat(newNode).concat(emptyNode));

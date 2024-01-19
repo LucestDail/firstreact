@@ -1,6 +1,7 @@
-export default (nodeId, parentNodeId) => {
+import XtrmUUID from "../modules/XtrmUUID";
+export default (parentNodeId) => {
     return {
-        id: nodeId,
+        id: 'empty_' + XtrmUUID(),
         type: 'emptyBox',
         targetPosition: 'top',
         position: {

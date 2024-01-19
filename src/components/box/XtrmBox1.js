@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import ReactFlow, { Handle, Position, useReactFlow, useOnSelectionChange, } from 'reactflow';
+import { Handle, Position, useReactFlow, useOnSelectionChange, } from 'reactflow';
 import NewItemOption from '../../options/NewItemOption.js';
 import XtrmItemContext from '../context/XtrmItemContext.js';
 let currentSelectedNode = {};
@@ -30,16 +30,9 @@ export default ({ data, isConnectable }) => {
     const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
     return (
         <>
-            <Handle
-                type="target"
-                position={Position.Top}
-                style={{ background: '#555' }}
-                onConnect={(params) => console.log('handle onConnect', params)}
-                isConnectable={isConnectable}
-            />
             {menu ? <XtrmItemContext onClick={onPaneClick} {...menu}/> : ""}
             <div className='itemWrapper'>
-                <div className="Bottom" style={{ alignSelf: 'stretch', paddingRight: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'inline-flex' }}>
+                <div className="Bottom" style={{ alignSelf: 'stretch', justifyContent: 'center', alignItems: 'center', gap: 4, display: 'inline-flex', width:'100%'}}>
                     <div onClick={(event) => { activeContext(currentSelectedNode, event) }} className="Btn" style={{ paddingTop: 6, paddingBottom: 6, paddingLeft: 6, paddingRight: 8, background: 'rgba(255, 255, 255, 0)', borderRadius: 6, justifyContent: 'center', alignItems: 'center', gap: 2, display: 'flex' }}>
                         <div className="Ico0041Add" style={{ width: 12, height: 12, position: 'relative' }}>
                         </div>
@@ -52,7 +45,6 @@ export default ({ data, isConnectable }) => {
                     </div>
                 </div>
             </div>
-
             <Handle
                 type="source"
                 position={Position.Bottom}

@@ -37,7 +37,7 @@ export default () => {
   const onChange = useCallback((params) => setNodes((eds) => applyNodeChanges(params, eds)), []);
   const onNodesDelete = useCallback(
     (deleted) => {
-      if (deleted[0].parentNode) {  // item node delete process
+      if (!('itemNumber' in deleted[0])) {  // item node delete process
         setEdges(
           deleted.reduce((acc, node) => {
             const connectedEdges = getConnectedEdges([node], edges);
@@ -92,7 +92,6 @@ export default () => {
     (event) => {
       event.preventDefault();
       const type = event.dataTransfer.getData('application/reactflow');
-      const emptyNodeId = 'empty_' + getId();
       if (typeof type === 'undefined' || !type) {
         return;
       }
@@ -100,10 +99,10 @@ export default () => {
         x: event.clientX,
         y: event.clientY,
       });
-      const newNode = NewNodeOption(type, position, emptyNodeId);
+      const newNode = NewNodeOption(type, position);
       setNodes((nds) => nds.concat(newNode));
       if (type !== 'output') {
-        const emptyNode = EmptyNodeOption(emptyNodeId, newNode.id);
+        const emptyNode = EmptyNodeOption(newNode.id);
         const newEdge = EmptyEdgeOption(newNode.id, emptyNode.id);
         //const newEdge = XtrmEdgeOption(newNode.id, emptyNode.id);
         setEdges((eds) => eds.concat(newEdge));

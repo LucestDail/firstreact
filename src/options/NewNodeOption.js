@@ -1,5 +1,5 @@
 import uuid from '../modules/XtrmUUID.js';
-export default (type, position, emptyNodeId) => {
+export default (type, position) => {
     return {
         id: 'box_' + uuid(),
         type,
@@ -18,7 +18,6 @@ export default (type, position, emptyNodeId) => {
         data: {
             label: `${type} node`
         },
-        itemNumber: 0,
-        emptyNodeId: emptyNodeId,
+        itemNumber: 0
     };
 }

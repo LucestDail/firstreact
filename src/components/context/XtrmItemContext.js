@@ -51,7 +51,7 @@ export default function ({
   return (
     <>
       <div
-        style={{ top, left, right, bottom }}
+        style={{inset:'auto' }}
         className="context-menu"
         {...props}
       >

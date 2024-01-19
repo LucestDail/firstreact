@@ -9,7 +9,7 @@ export default (type, position, parentNode) => {
         className: 'group-a',
         style: {
             backgroundColor: 'rgba(255, 0, 0, 0)',
-            width: 200,
+            width: 280,
             height: 100,
             borderWidth: 2,
             borderRadius: 5,
@@ -20,7 +20,7 @@ export default (type, position, parentNode) => {
         },
         itemNumber: 0,
         parentNode,
-        draggable: false,
-        deletable: false,
+        draggable: true,
+        deletable: true,
     }
 };
