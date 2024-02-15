@@ -20,7 +20,7 @@ import nodeTypes from './options/NodeTypes.js';
 import edgeTypes from './options/EdgeTypes.js';
 import NewNodeOption from './options/NewNodeOption.js';
 import EmptyNodeOption from './options/EmptyNodeOption.js';
-import EmptyEdgeOption from './options/newEdgeOption.js';
+import EmptyEdgeOption from './options/EmptyEdgeOption.js';
 import InitBoxOption from './options/InitBoxOption.js';
 import InitEdgeOption from './options/InitEdgeOption.js';
 import XtrmEdgeOption from './options/XtrmEdgeOption.js';
@@ -84,7 +84,7 @@ export default () => {
   );
   const onConnect = useCallback(
     (params) =>
-      setEdges((eds) => addEdge({ ...params, type: 'buttonedge', animated: true, style: { stroke: '#000' } }, eds)),
+      setEdges((eds) => addEdge({ ...params, type: 'emptyedge', animated: true, style: { stroke: '#000' } }, eds)),
     []
   );
   const onDragOver = useCallback((event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }, []);

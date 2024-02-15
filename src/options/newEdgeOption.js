@@ -7,9 +7,10 @@ export default (source, target) => {
         draggable: false,
         style: { stroke: '#000' },
         id: 'edge_' + uuid(),
-        type: 'buttonedge',
+        type: 'xtrmedge',
         deletable: false,
         selectable: false,
         data: { emptyNode: target },
+        pathOptions: 'step',
     }
 }

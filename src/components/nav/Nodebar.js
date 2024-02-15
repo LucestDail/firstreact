@@ -35,7 +35,7 @@ export default ({ setNodes, setEdges, nodes, edges }) => {
     return (
         <aside className="aside-container left0">
             <div className="description">노드 추가하기</div>
-            <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'input')} draggable>
+            {/* <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'input')} draggable>
                 시작 노드
             </div>
             <div className="dndnode" onDragStart={(event) => onDragStart(event, 'default')} draggable>
@@ -52,6 +52,12 @@ export default ({ setNodes, setEdges, nodes, edges }) => {
             </div>
             <div className="dndnode" onDragStart={(event) => onDragStart(event, 'xtrmEnd')} draggable>
                 XtrmEnd
+            </div> */}
+            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'xtrmStart')} draggable>
+                XtrmStart
+            </div>
+            <div className="dndnode" onDragStart={(event) => onDragStart(event, 'xtrmBasicBox')} draggable>
+                XtrmBasic
             </div>
             <button disabled={!message} onClick={onRestore} className="btn-add">
                 import react flow

@@ -1,5 +1,3 @@
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="ico_0108_stop">
-<path id="Vector" d="M10.6667 5H5.33333C5.14924 5 5 5.14924 5 5.33333V10.6667C5 10.8508 5.14924 11 5.33333 11H10.6667C10.8508 11 11 10.8508 11 10.6667V5.33333C11 5.14924 10.8508 5 10.6667 5Z" fill="#CCCCCC"/>
-</g>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 7.5H8C7.72386 7.5 7.5 7.72386 7.5 8V16C7.5 16.2761 7.72386 16.5 8 16.5H16C16.2761 16.5 16.5 16.2761 16.5 16V8C16.5 7.72386 16.2761 7.5 16 7.5Z" fill="black"/>
 </svg>

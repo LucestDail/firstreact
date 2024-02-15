@@ -12,3 +12,9 @@ import { useReactFlow } from 'reactflow';
 /********************* Local Definition area *********************/
 
 /********************* Main area *********************/
+
+
+/*
+css => /static/media/ => ../media/
+
+*/

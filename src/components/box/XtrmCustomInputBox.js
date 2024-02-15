@@ -59,7 +59,7 @@ export default ({ data, isConnectable }) => {
             {menu ? <XtrmItemContext onClick={onPaneClick} {...menu}/> : ""}
             <div className='itemWrapper'>
                 <div className="Bottom" style={{ alignSelf: 'stretch', paddingRight: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'inline-flex' }}>
-                    <div onClick={(event) => { activeContext(currentSelectedNode, event) }} className="Btn" style={{ paddingTop: 6, paddingBottom: 6, paddingLeft: 6, paddingRight: 8, background: 'rgba(255, 255, 255, 0)', borderRadius: 6, justifyContent: 'center', alignItems: 'center', gap: 2, display: 'flex' }}>
+                    <div onClick={(event) => { menu? onPaneClick() : activeContext(currentSelectedNode, event) }} className="Btn" style={{ paddingTop: 6, paddingBottom: 6, paddingLeft: 6, paddingRight: 8, background: 'rgba(255, 255, 255, 0)', borderRadius: 6, justifyContent: 'center', alignItems: 'center', gap: 2, display: 'flex' }}>
                         <div className="Ico0041Add" style={{ width: 12, height: 12, position: 'relative' }}>
                         </div>
                         <div className="Text" style={{ color: '#808080', fontSize: 12, fontFamily: 'Noto Sans KR', fontWeight: '500', lineHeight: '16px', wordWrap: 'break-word' }}>아이템 추가</div>

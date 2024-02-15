@@ -23,64 +23,105 @@
   
 .Ico0090Text{
     background-image: url('../assets/ico_0090_text.svg');
+    background-size: cover !important;
 }
 
 .Ico0091Sound{
     background-image: url('../assets/ico_0091_sound.svg');
+    background-size: cover !important;
 }
 
 .Ico0139Photo{
     background-image: url('../assets/ico_0139_photo.svg');
+    background-size: cover !important;
 }
 
 .Ico0289Card{
     background-image: url('../assets/ico_0289_card.svg');
+    background-size: cover !important;
 }
 
 .Ico0095Button{
     background-image: url('../assets/ico_0095_button.svg');
+    background-size: cover !important;
 }
 
 .Ico0093Carousel{
     background-image: url('../assets/ico_0093_carousel.svg');
+    background-size: cover !important;
 }
 
 .Ico0092Accordion{
     background-image: url('../assets/ico_0092_accordion.svg');
+    background-size: cover !important;
 }
 
 .Ico0043Detail{
     background-image: url('../assets/ico_0043_detail.svg');
+    background-size: cover !important;
 }
 
 .Ico0008Cal{
     background-image: url('../assets/ico_0008_cal.svg');
+    background-size: cover !important;
 }
 
 .Ico0032Time{
     background-image: url('../assets/ico_0032_time.svg');
+    background-size: cover !important;
 }
 
 .Ico0058Link{
     background-image: url('../assets/ico_0058_link.svg');
+    background-size: cover !important;
 }
 
 .Ico0094Book{
     background-image: url('../assets/ico_0094_book.svg');
+    background-size: cover !important;
 }
 
 .Ico0293Api{
     background-image: url('../assets/ico_0293_api.svg');
+    background-size: cover !important;
 }
 
 .Ico0219Dashboard{
     background-image: url('../assets/ico_0219_dashboard.svg');
+    background-size: cover !important;
 }
 
 .Ico0041Add{
     background-image: url('../assets/ico_0041_add.svg');
+    background-size: cover !important;
 }
 
 .Ico0085ChatSimulation{
     background-image: url('../assets/ico_0085_chat_simulation.svg');
+    background-size: cover !important;
+}
+
+.Ico0257ChatAgent{
+    background-image: url('../assets/ico_0257_chat_agent.svg');
+    background-size: cover !important;
+}
+
+.Ico0013CloseBold{
+    background-image: url('../assets/ico_0013_close_bold.svg');
+    background-size: cover !important;
+}
+
+.Ico0039MainQ{
+    background-image: url('../assets/ico_0039_main_q.svg');
+    background-size: cover !important;
+}
+
+.Ico0230User{
+    background-image: url('../assets/ico_0230_user.svg');
+    background-size: cover !important;
+}
+
+.Ico0096ArrowDownSolid{
+    background-image: url('../assets/ico_0096_arrow_down_solid.svg');
+    background-size: cover !important;
 }
