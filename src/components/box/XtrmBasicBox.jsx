@@ -66,8 +66,35 @@ let currentSelectedNode = {};
 
 
 export default () => {
+    const [menu, setMenu] = useState(null);
+    const { setNodes, getNodes, getNode, addNodes } = useReactFlow();
+    useOnSelectionChange({
+        onChange: ({ nodes, edges }) => {
+            if (nodes.length === 1) {
+                currentSelectedNode = nodes[0];
+            }
+        },
+    });
+    const activeContext = useCallback(
+        (currentSelectedNode, event) => {
+            event.preventDefault();
+            setMenu({
+                id: currentSelectedNode.id,
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+            });
+        },
+        [setMenu],
+    );
+    const activeSimulator = useCallback(() => { }, []);
+    const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+
+
     return (
         <>
+            {menu ? <XtrmItemContext onClick={onPaneClick} {...menu}/> : ''}
             <div className='box-wrapper box-wrapper-trigger'>
                 <div className='box-container-trigger'>
                     <div className='box-title-wrapper'>
@@ -107,7 +134,7 @@ export default () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='box-item-add-wrapper'>
+                            <div onClick={(event) => { menu? onPaneClick() : activeContext(currentSelectedNode, event) }} className='box-item-add-wrapper'>
                                 <div className='box-item-add-container'>
                                     <div className='Ico0041Add box-item-add-element'></div>
                                 </div>
@@ -134,7 +161,7 @@ export default () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='box-item-add-wrapper'>
+                            <div onClick={(event) => { menu? onPaneClick() : activeContext(currentSelectedNode, event) }} className='box-item-add-wrapper'>
                                 <div className='box-item-add-container'>
                                     <div className='Ico0041Add box-item-add-element'></div>
                                 </div>
